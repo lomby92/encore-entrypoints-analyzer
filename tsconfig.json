@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "lib": ["DOM"],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "noImplicitAny": true,
+    "outDir": "dist",
+    "removeComments": true,
+    "rootDir": "src",
+    "strictNullChecks": true,
+    "target": "ES5",
+  },
+}

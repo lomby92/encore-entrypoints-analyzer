@@ -1,0 +1,35 @@
+{
+  "name": "encore-entrypoints-analyzer",
+  "version": "0.0.1",
+  "description": "Webpack plugin for Symfony Encore that shows entrypoints.json file content in an interactive map",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prettier": "prettier --check src",
+    "prettier:fix": "prettier --write $1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lomby92/encore-entrypoints-analyzer.git"
+  },
+  "author": "Giacomo Lombardi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lomby92/encore-entrypoints-analyzer/issues"
+  },
+  "homepage": "https://github.com/lomby92/encore-entrypoints-analyzer#readme",
+  "devDependencies": {
+    "@types/webpack": "5.28.0",
+    "graphology-types": "0.23.0",
+    "prettier": "2.5.1",
+    "typescript": "4.5.4"
+  },
+  "dependencies": {
+    "graphology": "0.23.2",
+    "kotatsu": "0.22.3",
+    "sigma": "2.1.3"
+  }
+}
