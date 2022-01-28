@@ -45,7 +45,7 @@ const GRAPH_COLORS = {
 };
 
 class EncoreEntrypointsAnalyzerPlugin implements WebpackPluginInstance {
-    apply(compiler: Compiler) {
+    public apply(compiler: Compiler) {
         compiler.hooks.done.tap("Encore Entrypoints Analyzer Plugin", () => {
             // Read entrypoints.json file created by Symfony Encore
             const entrypointsJson = JSON.parse(
@@ -59,11 +59,11 @@ class EncoreEntrypointsAnalyzerPlugin implements WebpackPluginInstance {
                 const entrypoint = entrypointsJson.entrypoints[entrypointKey];
 
                 if (entrypoint.js) {
-                    entrypoint.js.forEach((jsEntry: string) => jsChunks.add(jsEntry));
+                    entrypoint.js.forEach((jsChunk: string) => jsChunks.add(this.filterChunkName(jsChunk)));
                 }
 
                 if (entrypoint.css) {
-                    entrypoint.css.forEach((cssEntry: string) => cssChunks.add(cssEntry));
+                    entrypoint.css.forEach((cssChunk: string) => cssChunks.add(this.filterChunkName(cssChunk)));
                 }
             }
 
@@ -71,7 +71,7 @@ class EncoreEntrypointsAnalyzerPlugin implements WebpackPluginInstance {
 
             // Create nodes for each JS/CSS chunk
             jsChunks.forEach((jsChunk) => {
-                const jsChunkPath = path.join(compiler.outputPath, "..", jsChunk);
+                const jsChunkPath = path.join(compiler.outputPath, "..", "/build", jsChunk);
                 const jsFileSize = fs.statSync(jsChunkPath).size;
 
                 graph.addNode(jsChunk, {
@@ -81,7 +81,7 @@ class EncoreEntrypointsAnalyzerPlugin implements WebpackPluginInstance {
                 });
             });
             cssChunks.forEach((cssChunk) => {
-                const cssChunkPath = path.join(compiler.outputPath, "..", cssChunk);
+                const cssChunkPath = path.join(compiler.outputPath, "..", "/build", cssChunk);
                 const cssFileSize = fs.statSync(cssChunkPath).size;
 
                 graph.addNode(cssChunk, {
@@ -103,12 +103,14 @@ class EncoreEntrypointsAnalyzerPlugin implements WebpackPluginInstance {
                 const edgeProperties = { size: 3, type: "arrow" };
 
                 if (entrypoint.js) {
-                    entrypoint.js.forEach((jsEntry: string) => graph.addEdge(jsEntry, entrypointKey, edgeProperties));
+                    entrypoint.js.forEach((jsChunk: string) =>
+                        graph.addEdge(this.filterChunkName(jsChunk), entrypointKey, edgeProperties)
+                    );
                 }
 
                 if (entrypoint.css) {
-                    entrypoint.css.forEach((cssEntry: string) =>
-                        graph.addEdge(cssEntry, entrypointKey, edgeProperties)
+                    entrypoint.css.forEach((cssChunk: string) =>
+                        graph.addEdge(this.filterChunkName(cssChunk), entrypointKey, edgeProperties)
                     );
                 }
             }
@@ -135,6 +137,10 @@ class EncoreEntrypointsAnalyzerPlugin implements WebpackPluginInstance {
                 }
             );
         });
+    }
+
+    private filterChunkName(chunkName: string): string {
+        return chunkName.replace("/build", "");
     }
 }
 

@@ -16,7 +16,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "dev": "rm -rf dev && tsc -outDir ./dev && cp ./utils/develop.js ./dev && cd dev && mkdir public && node develop.js",
+    "dev": "rm -rf dev && tsc -outDir ./dev && cp ./utils/develop.js ./dev && cd dev && node develop.js",
     "prettier": "prettier --check src",
     "prettier:fix": "prettier --write $1"
   },
