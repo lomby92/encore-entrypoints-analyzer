@@ -2,13 +2,21 @@
   "name": "encore-entrypoints-analyzer",
   "version": "0.0.1",
   "description": "Webpack plugin for Symfony Encore that shows entrypoints.json file content in an interactive map",
-  "keywords": ["webpack", "symfony", "bundle", "analyzer", "encore"],
+  "keywords": [
+    "webpack",
+    "symfony",
+    "bundle",
+    "analyzer",
+    "encore"
+  ],
   "main": "dist/index.js",
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsc",
+    "build:watch": "tsc --watch",
+    "dev": "rm -rf dev && tsc -outDir ./dev && cp ./utils/develop.js ./dev && cd dev && mkdir public && node develop.js",
     "prettier": "prettier --check src",
     "prettier:fix": "prettier --write $1"
   },

@@ -1,2 +1,5 @@
 \dist
 \node_modules
+
+# Used for local development
+\dev

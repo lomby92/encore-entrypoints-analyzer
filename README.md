@@ -24,3 +24,6 @@ const config = Encore.getWebpackConfig();
 const EncoreEntrypointsAnalyzerPlugin = require('encore-entrypoints-analyzer');
 config.plugins.push(new EncoreEntrypointsAnalyzerPlugin());
 ```
+
+## Contributing
+Check out [CONTRIBUTING.md](./CONTRIBUTING.md) for instructions on contributing :tada:
