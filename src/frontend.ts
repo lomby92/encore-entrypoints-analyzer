@@ -90,3 +90,48 @@ renderer.on("clickNode", ({ node }) => {
     // Trigger rendering
     renderer.refresh();
 });
+
+// Bindings for saving the graph as an image
+const saveButton = document.querySelector<HTMLButtonElement>("button[data-role='save-image']")!;
+saveButton.addEventListener("click", () => {
+    const pixelRatio = window.devicePixelRatio || 1;
+    const { width, height } = renderer.getDimensions();
+
+    // Force the Sigma view to refresh, it's required to properly show all layers in the saved image
+    renderer.refresh();
+
+    // Create a temporary canvas, on which all layers will be drawn
+    const canvas = document.createElement("canvas");
+    canvas.setAttribute("width", (width * pixelRatio).toString());
+    canvas.setAttribute("height", (height * pixelRatio).toString());
+    const ctx = canvas.getContext("2d")!;
+
+    // Draw a white background
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, width * pixelRatio, height * pixelRatio);
+
+    // Render all layers of the Sigma-Graph in to the canvas
+    Object.keys(renderer.getCanvases()).forEach((id) => {
+        ctx.drawImage(
+            renderer.getCanvases()[id],
+            0,
+            0,
+            width * pixelRatio,
+            height * pixelRatio,
+            0,
+            0,
+            width * pixelRatio,
+            height * pixelRatio
+        );
+    });
+
+    // Create a temporary anchor to save the image from the canvas
+    const link = document.createElement("a");
+    link.download = "entrypoints-report.png";
+    link.href = canvas.toDataURL();
+    link.click();
+
+    // Cleanup temporary DOM elements
+    link.remove();
+    canvas.remove();
+});

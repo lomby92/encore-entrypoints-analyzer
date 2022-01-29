@@ -27,8 +27,19 @@ const HTML_CONTENT = `
             padding: 0;
             overflow: hidden;
         }
+        button[data-role="save-image"] {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            max-width: 100%;
+            max-height: 100%;
+            margin: 0.5rem;
+            padding: 1rem;
+            background: #ffffff;
+        }
     </style>
     <div id="sigma-container"></div>
+    <button type="button" data-role="save-image">Save image</button>
     <script>
         const exportedGraph = '${EXPORTED_GRAPH_PLACEHOLDER}';
     </script>
