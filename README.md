@@ -24,6 +24,8 @@ const config = Encore.getWebpackConfig();
 const EncoreEntrypointsAnalyzerPlugin = require('encore-entrypoints-analyzer');
 config.plugins.push(new EncoreEntrypointsAnalyzerPlugin());
 ```
+It will create an interactive view of the entrypoints and chunks in your build.
+![Preview](https://user-images.githubusercontent.com/5825081/151657981-a6e47f3b-ca63-440f-8339-bd93953f2fc2.png)
 
 ## Contributing
 Check out [CONTRIBUTING.md](./CONTRIBUTING.md) for instructions on contributing :tada:
