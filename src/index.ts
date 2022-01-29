@@ -5,6 +5,12 @@ import * as path from "path";
 import { Compiler, WebpackPluginInstance } from "webpack";
 const Graph = require("graphology");
 
+const GRAPH_COLORS = {
+    CSS: "#264de4",
+    ENTRY: "#e44d26",
+    JS: "#dab92d",
+};
+
 const EXPORTED_GRAPH_PLACEHOLDER = "PLACEHOLDER";
 const FILES_OUTPUT_FOLDER = "encore-entrypoints-analyzer";
 const HTML_CONTENT = `
@@ -27,19 +33,37 @@ const HTML_CONTENT = `
             padding: 0;
             overflow: hidden;
         }
-        button[data-role="save-image"] {
+        .emphasized {
+            font-size: 1.3rem;
+        }
+        .overlay {
             position: absolute;
-            bottom: 0;
-            right: 0;
             max-width: 100%;
             max-height: 100%;
             margin: 0.5rem;
             padding: 1rem;
             background: #ffffff;
+            border: solid 2px black;
+        }
+        button[data-role="save-image"] {
+            bottom: 0;
+            right: 0;
+        }
+        div[data-role="legend"] {
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
         }
     </style>
     <div id="sigma-container"></div>
-    <button type="button" data-role="save-image">Save image</button>
+    <div class="overlay" data-role="legend">
+        <b class="emphasized">Legend</b>
+        <div><span class="emphasized" style="color:${GRAPH_COLORS.ENTRY}">&#9679;</span> Encore entrypoint</div>
+        <div><span class="emphasized" style="color:${GRAPH_COLORS.JS}">&#9679;</span> JavaScript chunk</div>
+        <div><span class="emphasized" style="color:${GRAPH_COLORS.CSS}">&#9679;</span> CSS chunk</div>
+    </div>
+    <button type="button" class="overlay" data-role="save-image">Save image</button>
     <script>
         const exportedGraph = '${EXPORTED_GRAPH_PLACEHOLDER}';
     </script>
@@ -48,12 +72,6 @@ const HTML_CONTENT = `
 </html>
 `;
 const OUTPUT_FILE_NAME = "entrypoints-report.html";
-
-const GRAPH_COLORS = {
-    CSS: "#264de4",
-    ENTRY: "#e44d26",
-    JS: "#dab92d",
-};
 
 class EncoreEntrypointsAnalyzerPlugin implements WebpackPluginInstance {
     public apply(compiler: Compiler) {
